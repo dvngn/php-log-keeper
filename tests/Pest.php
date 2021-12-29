@@ -54,7 +54,7 @@ uses()
     ->beforeEach(function () {
 
         if (!is_dir(LOG_DIRECTORY.'/sub')) {
-            mkdir(LOG_DIRECTORY.'/sub');
+            mkdir(directory: LOG_DIRECTORY.'/sub', recursive: true);
         }
 
         $days = CarbonPeriod::create(Carbon::today()->subMonth()->startOfMonth()->startOfDay(), Carbon::today()->endOfMonth()->endOfDay())->days();

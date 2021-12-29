@@ -1,13 +1,13 @@
 <?php
 
 use Devengine\LogKeeper\Repositories\LocalLogFileRepository;
+use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use League\Flysystem\Local\LocalFilesystemAdapter;
 
 test('it iterates log files', function () {
 
     $filesystem = new Filesystem(
-        new LocalFilesystemAdapter(LOG_DIRECTORY)
+        new Local(LOG_DIRECTORY)
     );
 
     $repository = new LocalLogFileRepository($filesystem);

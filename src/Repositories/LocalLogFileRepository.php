@@ -2,27 +2,39 @@
 
 namespace Devengine\LogKeeper\Repositories;
 
-use League\Flysystem\FilesystemOperator;
-use League\Flysystem\FilesystemReader;
-use League\Flysystem\StorageAttributes;
+use League\Flysystem\FilesystemInterface;
 use Traversable;
 
 class LocalLogFileRepository implements LogFileRepository
 {
-    public function __construct(protected FilesystemOperator $filesystem)
+    public function __construct(protected FilesystemInterface $filesystem)
     {
     }
 
     public function getIterator(): Traversable
     {
-        $files = $this->filesystem->listContents(location: '', deep: FilesystemReader::LIST_DEEP)
-            ->filter(static function (StorageAttributes $file): bool {
-                return (bool)preg_match("#.+-\d{4}-\d{2}-\d{2}.log#", $file->path());
-            });
+        $files = $this->filesystem->listContents(recursive: true);
+
+        $testFile = static function (array $file): bool {
+
+            if ('file' !== $file['type']) {
+                return false;
+            }
+
+            if (!preg_match("#.+-\d{4}-\d{2}-\d{2}.log#", $file['path'])) {
+                return false;
+            }
+
+            return true;
+
+        };
 
         foreach ($files as $file) {
-            /** @var StorageAttributes $file */
-            yield $file->path();
+
+            if ($testFile($file)) {
+                yield $file['path'];
+            }
+
         }
     }
 
@@ -39,7 +51,7 @@ class LocalLogFileRepository implements LogFileRepository
      */
     public function exists(string $name): bool
     {
-        return $this->filesystem->fileExists($name);
+        return $this->filesystem->has($name);
     }
 
     /**

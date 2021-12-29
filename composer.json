@@ -23,7 +23,7 @@
         "ext-zlib": "*",
         "symfony/finder": "^5.4",
         "nesbot/carbon": "^2.55",
-        "league/flysystem": "^2.3"
+        "league/flysystem": "^1.0"
     },
     "require-dev": {
         "pestphp/pest": "^1.21",

@@ -4,8 +4,8 @@ use Carbon\Carbon;
 use Devengine\LogKeeper\Repositories\LocalLogFileRepository;
 use Devengine\LogKeeper\Services\LogKeeperService;
 use Devengine\LogKeeper\Support\LogUtil;
+use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use League\Flysystem\Local\LocalFilesystemAdapter;
 use Symfony\Component\Finder\Finder;
 
 test('it archives obsolete log files', function () {
@@ -15,7 +15,7 @@ test('it archives obsolete log files', function () {
     ];
 
     $filesystem = new Filesystem(
-        new LocalFilesystemAdapter(LOG_DIRECTORY)
+        new Local(LOG_DIRECTORY)
     );
 
     $repository = new LocalLogFileRepository($filesystem);
