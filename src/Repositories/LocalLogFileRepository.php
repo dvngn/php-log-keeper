@@ -81,13 +81,17 @@ class LocalLogFileRepository implements LogFileRepository
 
         $compressedFilename = rtrim($directory, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$basename."gz";
 
-        $stream = tmpfile();
+        $tmp = tmpfile();
+
+        $path = stream_get_meta_data($tmp)['uri'];
+
+        $stream = \gzopen($path, 'wb9');
 
         \gzwrite($stream, $this->get($name));
 
-        $this->filesystem->writeStream($compressedFilename, $stream);
-
         \gzclose($stream);
+
+        $this->filesystem->writeStream($compressedFilename, $tmp);
 
         return true;
     }
