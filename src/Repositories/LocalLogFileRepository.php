@@ -76,10 +76,10 @@ class LocalLogFileRepository implements LogFileRepository
 
     public function compress(string $name): bool
     {
-        $basename = $this->basename($name);
+        $basename = pathinfo($name, PATHINFO_BASENAME);
         $directory = pathinfo($name, PATHINFO_DIRNAME);
 
-        $compressedFilename = rtrim($directory, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$basename."gz";
+        $compressedFilename = rtrim($directory, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$basename.".gz";
 
         $tmp = tmpfile();
 
@@ -94,12 +94,5 @@ class LocalLogFileRepository implements LogFileRepository
         $this->filesystem->writeStream($compressedFilename, $tmp);
 
         return true;
-    }
-
-    private function basename(string $name): string
-    {
-        $extension = pathinfo($name, PATHINFO_EXTENSION);
-
-        return basename(pathinfo($name, PATHINFO_BASENAME), $extension);
     }
 }
