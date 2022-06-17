@@ -6,14 +6,15 @@ use Carbon\CarbonImmutable;
 use Devengine\LogKeeper\Exceptions\LogUtilException;
 use Devengine\LogKeeper\Repositories\LogFileRepository;
 use Devengine\LogKeeper\Support\LogUtil;
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-class LogKeeperService
+class LogKeeperService implements LoggerAwareInterface
 {
     public function __construct(protected readonly array $config,
                                 protected readonly LogFileRepository $repository,
-                                protected readonly LoggerInterface $logger = new NullLogger())
+                                protected LoggerInterface $logger = new NullLogger())
     {
     }
 
@@ -52,5 +53,10 @@ class LogKeeperService
     private function getRetentionDays(): int
     {
         return $this->config['days'] ?? 30;
+    }
+
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
     }
 }
