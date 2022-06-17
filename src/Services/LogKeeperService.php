@@ -28,7 +28,6 @@ class LogKeeperService implements LoggerAwareInterface
         $this->logger->info("Log retention days: {$this->getRetentionDays()}");
 
         foreach ($this->repository as $filename) {
-
             $fileDate = LogUtil::parseDate($filename);
 
             if ($today->diffInDays($fileDate) > $this->getRetentionDays()) {
@@ -38,7 +37,6 @@ class LogKeeperService implements LoggerAwareInterface
                     'filename' => $filename,
                 ]);
             }
-
         }
 
         $this->logger->info("Log archiving is finished.");

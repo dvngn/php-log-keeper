@@ -16,7 +16,6 @@ class LocalLogFileRepository implements LogFileRepository
         $files = $this->filesystem->listContents(recursive: true);
 
         $testFile = static function (array $file): bool {
-
             if ('file' !== $file['type']) {
                 return false;
             }
@@ -26,15 +25,12 @@ class LocalLogFileRepository implements LogFileRepository
             }
 
             return true;
-
         };
 
         foreach ($files as $file) {
-
             if ($testFile($file)) {
                 yield $file['path'];
             }
-
         }
     }
 
