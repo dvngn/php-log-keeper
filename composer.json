@@ -21,12 +21,17 @@
     "require": {
         "php": ">=8.1",
         "ext-zlib": "*",
-        "symfony/finder": "^5.4",
+        "symfony/finder": "^6.0",
         "nesbot/carbon": "^2.55",
         "league/flysystem": "^1.0"
     },
     "require-dev": {
         "pestphp/pest": "^1.21",
         "symfony/var-dumper": "^6.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": false
+        }
     }
 }
